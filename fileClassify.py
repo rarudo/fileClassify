@@ -2,10 +2,17 @@
 import os
 import shutil
 
-# 先頭から何文字参照してフォルダ分けを行うか
+# スクリプトを実行するフォルダを指定
+# デフォルトはスクリプトが置かれたフォルダ
 workDir = os.getcwd() + "/"
+# workDir = "/Users/user/Downloads/tesPython/tesDir/"
+
 # スペースで分割できなかった場合、指定された文字で分割
-secondSplit = "-"
+splitList = ["-",
+             "."
+             ]
+
+
 def moveDir(fileName, dirName):
     shutil.move(fileName, dirName)
 
@@ -14,33 +21,36 @@ def getFilesDirs():
     fileList = []
     dirList = []
     for file in files:
+        # ファイルの判別
         if "." in file and file[0] != ".":
             fileList.append(file)
-        else:
+        # ディレクトリの判別、隠しファイルは除外
+        elif file[0] != ".":
             dirList.append(file)
     return fileList, dirList
 
-# スペースを含むまでの文字数を返す
+
+# 指定された条件でファイル名を分割
 def getPrefix(file):
-    if len(file.split()) > 1:
-        splits = file.split()
-    elif len(file.split(secondSplit)) > 1:
-        splits = file.split(secondSplit)
-    else:
-        splits = file.split(".")
+    for split in splitList:
+        if len(file.split()) > 1:
+            splits = file.split()
+            break
+        elif len(file.split(split)) > 1:
+            splits = file.split(split)
+            break
     prefix = splits[0]
     return prefix
+
 
 files, dirs = getFilesDirs()
 for file in files:
     prefix = getPrefix(file)
     if prefix in dirs:
-        shutil.move(workDir+file,workDir+prefix)
+        shutil.move(workDir + file, workDir + prefix)
     else:
-        mkdirPath = workDir+prefix
+        mkdirPath = workDir + prefix
         print(mkdirPath)
         os.mkdir(mkdirPath)
-        shutil.move(workDir+file,workDir+prefix)
+        shutil.move(workDir + file, workDir + prefix)
     files, dirs = getFilesDirs()
-
-
