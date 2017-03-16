@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import shutil
+import io, sys
 
 # スクリプトを実行するフォルダを指定
 # デフォルトはスクリプトが置かれたフォルダ
@@ -12,12 +13,18 @@ splitList = ["-",
              "."
              ]
 
+# Windowsのコマンドプロンプトではcp932文字コードを使用しないよう設定
+if os.name == "nt":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer,
+                                  encoding=sys.stdout.encoding,
+                                  errors='backslashreplace',
+                                  line_buffering=sys.stdout.line_buffering)
 
 def moveDir(fileName, dirName):
     shutil.move(fileName, dirName)
 
-def getFilesDirs():
-    files = os.listdir(workDir)
+def getFilesDirs(workDir_):
+    files = os.listdir(workDir_)
     fileList = []
     dirList = []
     for file in files:
@@ -43,7 +50,7 @@ def getPrefix(file):
     return prefix
 
 
-files, dirs = getFilesDirs()
+files, dirs = getFilesDirs(workDir)
 for file in files:
     prefix = getPrefix(file)
     if prefix in dirs:
