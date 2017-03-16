@@ -6,7 +6,7 @@ import io, sys
 # スクリプトを実行するフォルダを指定
 # デフォルトはスクリプトが置かれたフォルダ
 workDir = os.getcwd() + "/"
-workDir = "/Users/user/Downloads/tesPython/tesDir/"
+#workDir = "/Users/user/Downloads/tesPython/tesDir2/"
 
 # スペースで分割できなかった場合、指定された文字で分割
 splitList = ["-",
